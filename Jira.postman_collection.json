@@ -1,0 +1,238 @@
+{
+	"info": {
+		"_postman_id": "155dff27-d423-4b2d-b6e2-ac0e54d5fa65",
+		"name": "Jira",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20970102"
+	},
+	"item": [
+		{
+			"name": "GetTotalNumberofIssueCount",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response= pm.response.json();\r",
+							"pm.globals.set(\"description\",response.description);\r",
+							"console.log(description);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://testleafmay2022.atlassian.net/rest/api/2/search?jql=Project=MAY",
+					"protocol": "https",
+					"host": [
+						"testleafmay2022",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"search"
+					],
+					"query": [
+						{
+							"key": "jql",
+							"value": "Project=MAY"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ToGetTheIssueCount",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"let response=pm.response.json();\r",
+							"pm.globals.set(\"totalcount\", response.total);\r",
+							"console.log(response.total);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://testleafmay2022.atlassian.net/rest/api/2/search?jql=Project=MAY",
+					"protocol": "https",
+					"host": [
+						"testleafmay2022",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"search"
+					],
+					"query": [
+						{
+							"key": "jql",
+							"value": "Project=MAY"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ToPrintTheIssuecreatedin24Hours",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Issue created in 24hrs\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"let res=pm.response.json()\r",
+							"console.log(res.issues[0].fields.issuetype.description)\r",
+							"\r",
+							"console.log(res.issues[res.issues.length -1].fields.issuetype.description)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://testleafmay2022.atlassian.net/rest/api/2/search?jql=project=May and created >= -1h",
+					"protocol": "https",
+					"host": [
+						"testleafmay2022",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"search"
+					],
+					"query": [
+						{
+							"key": "jql",
+							"value": "project=May and created >= -1h"
+						},
+						{
+							"key": "created",
+							"value": ">-1h",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ToGetFirstAndLastIssueDescription",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"first and alst description is printed with less than 1 sec\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"//let length=pm.response.json().issues.length\r",
+							"let res=pm.response.json()\r",
+							"console.log(\"Description of first one\" +res.issues[0].fields.description)\r",
+							"console.log(\"Description of second one\" +res.issues(response.issues.length -1).fields.description)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://testleafmay2022.atlassian.net/rest/api/2/search?jql=project=May ",
+					"protocol": "https",
+					"host": [
+						"testleafmay2022",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"search"
+					],
+					"query": [
+						{
+							"key": "jql",
+							"value": "project=May "
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "37lYGYVDMVQNU6pCFniW15A2",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "testleafmay2022@gmail.com",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
